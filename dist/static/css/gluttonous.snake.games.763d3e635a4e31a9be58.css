@@ -12,14 +12,14 @@ body {
   overscroll-behavior-y: none;
   -ms-touch-action: none;
       touch-action: none;
-  background: url(/25f7361b582de0c86955.jpg) no-repeat center center;
+  background: black url('http://oss.dsnbc.com/images/20230308/4ef8464267736dd08257db6602d95c7c.jpeg') no-repeat center center;
   background-size: cover;
 }
 body .scene {
   width: 100vw;
   height: 100vh;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(30px);
           backdrop-filter: blur(30px);
 }

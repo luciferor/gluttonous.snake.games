@@ -3,6 +3,8 @@ const MineCssExtractPlugin = require('mini-css-extract-plugin');//将css语法�
 const HtmlWebpackPlugin = require('html-webpack-plugin');//引入html插件，用于自动生成html模版文件
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+console.log(__dirname,'A')
+
 //webpack所有的配置信息都配置在这里module.export
 module.exports = {
     //入口文件
@@ -12,13 +14,13 @@ module.exports = {
         //打包到哪里
         path:path.resolve(__dirname,'dist'),
         //打包后的文件
-        filename:'gluttonous.snake.games.[hash].js',
+        filename:'static/js/gluttonous.snake.games.[hash].js',
         //配置图片打包路径
-        publicPath:'/',
+        // publicPath:'./',
         //配置打包环境,
         environment:{
             arrowFunction:false //配置不使用箭头函数，用于兼容ie不支持es6剪头函数语法。
-        },
+        }
     },
     //制定webpack打包需要的模块
     module:{
@@ -80,31 +82,61 @@ module.exports = {
                                         }
                                     ]
                                 ]
-                            }
+                            },
                         }
                     },
-                    'less-loader'
+                    {
+                        loader:'less-loader',
+                        options:{
+                            // publicPath:'./images/'
+                        }
+                    }
+                    // 'less-loader'
                 ]
             },
             //配置图片打包
             {
-                test:/\.(png|gif|jpg|jpeg|webp)$/,
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 use:[
                     {
                         loader:'url-loader',
                         options:{
-                            limit:47000,
-                            name:"images/[name].[hash],[ext]"
+                            limit: 10000,
+                            name: 'static/images/[name].[hash:7].[ext]'
                         }
                     }
                 ]
-            }
+            },
+            {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                use:[
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000,
+                            name: 'static/medias/[name].[hash:7].[ext]'
+                        }
+                    }
+                ]
+              },
+              {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                use:[
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000,
+                            name: 'static/fonts/[name].[hash:7].[ext]'
+                        }
+                    }
+                ]
+              }
         ]
     },
     //配置webpack插件
     plugins:[
         new MineCssExtractPlugin({
-            filename: 'gluttonous.snake.games.[hash].css'
+            filename: 'static/css/gluttonous.snake.games.[hash].css',
         }),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({

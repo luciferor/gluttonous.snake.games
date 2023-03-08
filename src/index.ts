@@ -11,7 +11,7 @@ const snake = new Snake(scene.scene);
 const ctrl = new Ctrls();
 
 const restart:HTMLElement = document.getElementById('restart')!;
-restart.onclick = ()=>{
+restart.onclick = function(){
     ctrl.gameover.classList.remove('showgameover');
     ctrl.score = 0;
     ctrl.direction = 'ArrowRight';

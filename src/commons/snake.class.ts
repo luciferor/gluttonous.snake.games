@@ -12,6 +12,7 @@ export default class Snake{
     sw:number = Math.floor(window.innerWidth/20)*20-20;
     sh:number = Math.floor(window.innerHeight/20)*20-20;
     isActive:boolean = true;
+    audio:HTMLAudioElement = new Audio(require('../Medias/576.mp3').default);
     constructor(canvas:HTMLCanvasElement) {
         this.scene = canvas;
         this.drawSnake();
@@ -29,7 +30,7 @@ export default class Snake{
         const ctx = this.scene.getContext('2d')!;
         for(let i:number=0;i<Math.floor(this.sw/this.grid);i++){
             for(let j:number=0;j<Math.floor(this.sh/this.grid);j++){
-                this.drawLine(ctx,'rgba(255,255,255,0.1)',i*this.grid,j*this.grid);
+                this.drawLine(ctx,'rgba(0,0,100,0.1)',i*this.grid,j*this.grid);
             }
         }
     }
@@ -65,11 +66,8 @@ export default class Snake{
         const h:number[][] = JSON.parse(JSON.stringify(this.data));
         //是否咬到自己了
         for(let i:number=1;i<this.data.length;i++){
-            console.log(i,this.data.length)
-            console.log(this.data[i][0],h[0][0],this.data[i][1],h[0][1])
             //判断是否咬到自己了
             if(this.data[i][0]===h[0][0]&&this.data[i][1]===h[0][1]){
-                console.log('咬到自己了');
                 this.isActive = false;
                 c.showGameOver();
                 return;
@@ -81,7 +79,6 @@ export default class Snake{
                 if(this.data[0][1]>0){
                     this.data[0] = [h[0][0],h[0][1]-this.grid];
                 }else{
-                    console.log('死了')
                     this.isActive = false;
                     c.showGameOver();
                     return;
@@ -91,7 +88,6 @@ export default class Snake{
                 if(this.data[0][1]<this.sh-this.grid){
                     this.data[0] = [h[0][0],h[0][1]+this.grid];
                 }else{
-                    console.log('死了')
                     this.isActive = false;
                     c.showGameOver();
                     return;
@@ -101,7 +97,6 @@ export default class Snake{
                 if(this.data[0][0]>0){
                     this.data[0] = [h[0][0]-this.grid,h[0][1]];
                 }else{
-                    console.log('死了')
                     this.isActive = false;
                     c.showGameOver();
                     return;
@@ -111,7 +106,6 @@ export default class Snake{
                 if(this.data[0][0]<this.sw-this.grid){
                     this.data[0] = [h[0][0]+this.grid,h[0][1]];
                 }else{
-                    console.log('死了')
                     this.isActive = false;
                     c.showGameOver();                              
                     return;
@@ -141,6 +135,7 @@ export default class Snake{
             }
         });
         if(f.x===this.data[0][0]&&f.y===this.data[0][1]){
+            this.audio.play();
             switch (this.direction) {
                 case 'ArrowUp':
                     this.data.push([this.data[0][0],this.data[0][1]+20]);//蛇身长长了。
