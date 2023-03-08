@@ -14,7 +14,7 @@ module.exports = {
         //打包后的文件
         filename:'gluttonous.snake.games.[hash].js',
         //配置图片打包路径
-        publicPath:'./dist/',
+        publicPath:'/',
         //配置打包环境,
         environment:{
             arrowFunction:false //配置不使用箭头函数，用于兼容ie不支持es6剪头函数语法。

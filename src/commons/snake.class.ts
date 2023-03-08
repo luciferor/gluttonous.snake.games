@@ -14,7 +14,6 @@ export default class Snake{
     isActive:boolean = true;
     constructor(canvas:HTMLCanvasElement) {
         this.scene = canvas;
-        // this.drawSceneLine();
         this.drawSnake();
         window.addEventListener('resize',this.initScene.bind(this))
     }
@@ -30,13 +29,7 @@ export default class Snake{
         const ctx = this.scene.getContext('2d')!;
         for(let i:number=0;i<Math.floor(this.sw/this.grid);i++){
             for(let j:number=0;j<Math.floor(this.sh/this.grid);j++){
-                // ctx.fillStyle = this.randomColor();
-                ctx.fillStyle = 'rgba(255,255,255,0.1)';
-                ctx.beginPath();
-                ctx.arc(i*this.grid+10,j*this.grid+10,10,0*Math.PI,2*Math.PI,true);
-                ctx.closePath();
-                ctx.fill();
-                // ctx.fillRect(i*this.grid,j*this.grid,this.grid,this.grid);
+                this.drawLine(ctx,'rgba(255,255,255,0.1)',i*this.grid,j*this.grid);
             }
         }
     }
@@ -54,31 +47,15 @@ export default class Snake{
 
     drawSnake(){
         let _o = this;
-        console.log(this.sw,this.sh)
         const ctx = this.scene.getContext('2d')!;
         this.data.forEach((e,i) => {
             if(i===0){
-                ctx.fillStyle = '#00CC00';
-                ctx.beginPath();
-                ctx.arc(e[0]+10,e[1]+10,10,0*Math.PI,2*Math.PI,true);
-                ctx.closePath();
-                ctx.fill();
-                // ctx.fillRect(e[0],e[1],this.grid,this.grid);
+                this.drawLine(ctx,'#00CC00',e[0],e[1]);
             }else{
-                ctx.fillStyle = '#99FF00';
-                ctx.beginPath();
-                ctx.arc(e[0]+10,e[1]+10,10,0*Math.PI,2*Math.PI,true);
-                ctx.closePath();
-                ctx.fill();
-                // ctx.fillRect(e[0],e[1],this.grid,this.grid);
+                this.drawLine(ctx,'#99FF00',e[0],e[1]);
             }
         });
-        ctx.fillStyle = '#FF3366';
-        ctx.beginPath();
-        ctx.arc(f.x+10,f.y+10,10,0*Math.PI,2*Math.PI,true);
-        ctx.closePath();
-        ctx.fill();
-        // ctx.fillRect(f.x,f.y,this.grid,this.grid);
+        this.drawLine(ctx,'#FF3366',f.x,f.y);
         this.snakeMove();
     }
 
@@ -86,6 +63,19 @@ export default class Snake{
     async snakeMove(){
         if(!this.isActive) return;
         const h:number[][] = JSON.parse(JSON.stringify(this.data));
+        //是否咬到自己了
+        for(let i:number=1;i<this.data.length;i++){
+            console.log(i,this.data.length)
+            console.log(this.data[i][0],h[0][0],this.data[i][1],h[0][1])
+            //判断是否咬到自己了
+            if(this.data[i][0]===h[0][0]&&this.data[i][1]===h[0][1]){
+                console.log('咬到自己了');
+                this.isActive = false;
+                c.showGameOver();
+                return;
+            }
+        }
+        
         switch (this.direction) {
             case 'ArrowUp':
                 if(this.data[0][1]>0){
@@ -93,6 +83,7 @@ export default class Snake{
                 }else{
                     console.log('死了')
                     this.isActive = false;
+                    c.showGameOver();
                     return;
                 }
                 break;
@@ -102,6 +93,7 @@ export default class Snake{
                 }else{
                     console.log('死了')
                     this.isActive = false;
+                    c.showGameOver();
                     return;
                 }
                 break;
@@ -111,6 +103,7 @@ export default class Snake{
                 }else{
                     console.log('死了')
                     this.isActive = false;
+                    c.showGameOver();
                     return;
                 }
                 break;
@@ -119,7 +112,8 @@ export default class Snake{
                     this.data[0] = [h[0][0]+this.grid,h[0][1]];
                 }else{
                     console.log('死了')
-                    this.isActive = false;                              
+                    this.isActive = false;
+                    c.showGameOver();                              
                     return;
                 }
                 break;
@@ -127,34 +121,23 @@ export default class Snake{
                 break;
         }
         
+        //设置蛇头当前位置
         for(let i=1;i<=this.data.length-1;i++){
             this.data[i] = h[i-1];
         }
+
         const ctx = this.scene.getContext('2d')!;
         ctx.clearRect( 0, 0, this.scene.width, this.scene.height );
         this.drawSceneLine();
+        
         //绘制食物
-        ctx.fillStyle = '#FF3366';
-        ctx.beginPath();
-        ctx.arc(f.x+10,f.y+10,10,0*Math.PI,2*Math.PI,true);
-        ctx.closePath();
-        ctx.fill();
-        // ctx.fillRect(f.x,f.y,this.grid,this.grid);
+        this.drawLine(ctx,this.randomColor(),f.x,f.y);
+
         this.data.forEach((e,i) => {
             if(i===0){
-                ctx.fillStyle = '#00CC00';
-                ctx.beginPath();
-                ctx.arc(e[0]+10,e[1]+10,10,0*Math.PI,2*Math.PI,true);
-                ctx.closePath();
-                ctx.fill();
-                // ctx.fillRect(e[0],e[1],this.grid,this.grid);
+                this.drawLine(ctx,'#00CC00',e[0],e[1]);
             }else{
-                ctx.fillStyle = '#99FF00';
-                ctx.beginPath();
-                ctx.arc(e[0]+10,e[1]+10,10,0*Math.PI,2*Math.PI,true);
-                ctx.closePath();
-                ctx.fill();
-                // ctx.fillRect(e[0],e[1],this.grid,this.grid);
+                this.drawLine(ctx,'#99FF00',e[0],e[1])
             }
         });
         if(f.x===this.data[0][0]&&f.y===this.data[0][1]){
@@ -175,7 +158,10 @@ export default class Snake{
                     break;
             }
             c.score+=10;
-            f.randomPosi();//重新生成位置了
+            //重新生成位置了
+            f.randomPosi();
+            //判断是否与蛇身重合
+            this.foodsIsInSnake();
         }
         this.timerHandle();
     }
@@ -183,8 +169,27 @@ export default class Snake{
     //循环
     async timerHandle(){
         let timer = null;
-        timer = setTimeout(() => {
+        timer = await setTimeout(() => {
             this.snakeMove();
         }, c.speed);
+    }
+
+    //画圆
+    drawLine(ctx:any,color:string,x:number,y:number){
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x+10,y+10,10,0*Math.PI,2*Math.PI,true);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    //判断食物的坐标是否与蛇身重合
+    foodsIsInSnake(){
+        for(let i:number=0;i<this.data.length;i++){
+            if(f.x === this.data[0][0]&&f.y === this.data[0][1]){
+                //重合了要重新生成坐标
+                f.randomPosi();
+            }
+        }
     }
 }

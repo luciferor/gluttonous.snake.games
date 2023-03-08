@@ -27,4 +27,37 @@ body{
             border-radius: 10px;
         }
     }
+    .gameover{
+        width:100vw;
+        height:100vh;
+        background:rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        z-index: 99999;
+        top:-100vh;
+        opacity: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+        color:#c7c7c7;
+        font-weight: bold;
+        font-size: 38px;
+        transition: 1s all ease-in-out;
+        .reStart{
+            width:150px;
+            height:40px;
+            background-color: rgb(10, 185, 4);
+            font-size: 24px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            color:white;
+        }
+    }
+    .showgameover{
+        top:0;
+        opacity: 1;
+    }
 }

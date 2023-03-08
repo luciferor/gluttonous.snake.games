@@ -1,0 +1,89 @@
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+body {
+  overscroll-behavior-y: none;
+  -ms-touch-action: none;
+      touch-action: none;
+  background: url(/25f7361b582de0c86955.jpg) no-repeat center center;
+  background-size: cover;
+}
+body .scene {
+  width: 100vw;
+  height: 100vh;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: blur(30px);
+          backdrop-filter: blur(30px);
+}
+body .scene #scene {
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
+}
+body .scene #scene {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 10px;
+}
+body .gameover {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  position: fixed;
+  z-index: 99999;
+  top: -100vh;
+  opacity: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+  color: #c7c7c7;
+  font-weight: bold;
+  font-size: 38px;
+  -webkit-transition: 1s all ease-in-out;
+  -o-transition: 1s all ease-in-out;
+  transition: 1s all ease-in-out;
+}
+body .gameover .reStart {
+  width: 150px;
+  height: 40px;
+  background-color: #0ab904;
+  font-size: 24px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 20px;
+  margin-top: 30px;
+  color: white;
+}
+body .showgameover {
+  top: 0;
+  opacity: 1;
+}
+
